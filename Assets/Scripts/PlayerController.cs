@@ -12,6 +12,8 @@ public class PlayerController : MonoBehaviour
     public int health = 5;
     public Text scoreText;
     public Text healthText;
+    public Text WinLoseText;
+    public Image WinLoseBG;
     // Start is called before the first frame update
     void Start()
     {
@@ -59,7 +61,8 @@ public class PlayerController : MonoBehaviour
                 
         if (other.gameObject.tag == "Goal")
         {
-            Debug.Log(string.Format("You win!"));
+            SetWin();
+            //Debug.Log(string.Format("You win!"));
         }
     }
 
@@ -73,15 +76,41 @@ public class PlayerController : MonoBehaviour
         healthText.text = "Health: " + health.ToString();
     }
 
+    void SetWin()
+    {
+        WinLoseText.text = "You Win!";
+        WinLoseText.color = Color.black;
+        WinLoseBG.color = Color.green;
+        WinLoseBG.gameObject.SetActive(true);
+        StartCoroutine(LoadScene(3));
+    }
+
+    void SetGameOver()
+    {
+        WinLoseText.text = "Game Over!";
+        WinLoseText.color = Color.white;
+        WinLoseBG.color = Color.red;
+        WinLoseBG.gameObject.SetActive(true);
+        health = 5;
+        score = 0;
+    }
+
+    IEnumerator LoadScene(float seconds)
+    {
+        yield return new WaitForSeconds(seconds);
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+
+    }
+
     // Update is called once per frame
     void Update()
     {
         if (health == 0)
         {
-            Debug.Log(string.Format("Game Over!"));
-            health = 5;
-            score = 0;
-            SceneManager.LoadScene("maze");
+            SetGameOver();
+            //Debug.Log(string.Format("Game Over!"));
+            StartCoroutine(LoadScene(3));
+            //SceneManager.LoadScene("maze");
         }
     }
 }
