@@ -40,6 +40,10 @@ public class PlayerController : MonoBehaviour
         {
             rb.AddForce(0,0 ,-speed * Time.deltaTime );
         }
+        if (Input.GetKey("escape"))
+        {
+            SceneManager.LoadScene(0);
+        }
     }
 
     void OnTriggerEnter(Collider other)
